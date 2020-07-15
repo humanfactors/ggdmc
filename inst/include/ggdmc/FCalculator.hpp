@@ -28,7 +28,6 @@
 
 #include <RcppArmadillo.h> // for std, cmath and many other supports via Rcpp
 
-
 #define xrenew(T,OLD,N) ( (T *)xrealloc(OLD, (N)*sizeof(T)) )
 
 class F_calculator
@@ -59,7 +58,6 @@ public:
   double TUNE_PDE_DT_SCALE;
 
   double F_limit(double z);
-
 };
 
 class F_sz_data // sz
@@ -94,7 +92,8 @@ public:
   double *avg;		// the computed average (size N+1)
 };
 
-// A specific two-step constructor,  two member functions and a destructor
+
+// A specific two-step constructor, two member functions and a destructor
 // of the F_calculator class
 F_calculator * F_new (Parameters *params);
 void           F_start (F_calculator *fc, int boundary);

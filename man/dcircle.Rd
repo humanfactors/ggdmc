@@ -6,7 +6,7 @@
 \alias{rcircle}
 \alias{rcircle_process}
 \alias{r1d}
-\title{The 2-dimension Diffusion Model}
+\title{Two-dimension Diffusion Model}
 \usage{
 dcircle(RT, A, P, tmax, kmax, sz, nw)
 
@@ -19,6 +19,10 @@ rcircle_process(P, tmax, h)
 r1d(P, tmax, h)
 }
 \arguments{
+\item{RT, }{a vector storing response times}
+
+\item{A}{a vector storing response angles.}
+
 \item{P}{is a parameter vector, c(v1, v2, a, t0, sigma1, sigma2, eta1, eta2).
 The sequence is important. v1 is the x-axis mean drift rate. v2 is the
 y-axis mean drift rate. sigma1 is the x-axis within-trial drift rate SD.
@@ -33,24 +37,45 @@ non-decision time.}
 
 \item{nw}{the number of theta steps (w = 2 * pi / nw)}
 
-\item{h, }{sz the number of time steps (h = tmax / sz). h is time step.
+\item{n}{number of observations}
+
+\item{h, sz}{sz is the number of time steps (h = tmax / sz). h is time step.
 Mostly .1 ms.}
 
-\item{x, }{n x is a data.matrix with first column of RT and a second column
-of R. n is the numbers of observation.}
+\item{P}{is a parameter vector, c(v, a, z, t0, s).
+The sequence must be followed. v is the drift rate
+a is decision threshold. t0 is the non-decision time.}
+
+\item{tmax}{maximum time allowed.}
+
+\item{kmax}{the tuning parameter for Bessel function. Mostly 50.}
+
+\item{h, sz}{sz is the number of time steps (h = tmax / sz). h is
+the size of one time step. We usually set h = 1e-4. That is .1 ms.
+So when tmax is 2 second and each time step is 0.1 ms, sz will be
+2e4 steps.}
 }
 \value{
+rcircle returns a n x 2 matrix. Each row is an [RT R] trial.
+dcircle returns a n vector.
+
 rcircle returns a n x 2 matrix. Each row is an [RT R] trial.
 dcircle returns a n vector.
 }
 \description{
 Density, random generation for the 2-D diffusion model.
+
+This function generates one 1-D diffusion process.
 }
 \details{
 The model has the main parameters, v1, v2, eta1, eta2, a, sigma, and t0.
 tmax, kmax, sz and nw are tuning parameters for determining the set.
 dcircle300 produces PDF table and others.
+
+The model has five parameters, v, a, z, t0, and s. tmax and h are
+tuning parameters for determining the set.
 }
 \examples{
 ## TODO examples
+
 }

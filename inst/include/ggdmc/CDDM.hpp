@@ -150,8 +150,6 @@ const cheb_series _gsl_sf_bessel_amp_phase_bth1_cs = {
   12
 };
 
-
-
 class cddm
 {
   public:
@@ -206,8 +204,9 @@ class cddm
 
       m_sz = m_tmax/m_h; // nmax
       m_a2 = m_a*m_a;
-      m_w  = M_2PI/m_nw;
+      m_w  = M_2PI/m_nw; // m_w become inf when m_nw == 0 (NA will be casted to 0)
       m_thetai = arma::linspace(-M_PI, M_PI, m_nw+1); // +1 to circle back to starting
+
     }
 
     void d0_GSL(arma::vec & DT, arma::vec & Gt0)
@@ -323,7 +322,7 @@ class cddm
       double theta, Dt2;      // Distance_t^2
       unsigned int j;  // time step counter
       arma::rowvec mut1 = m_v1*arma::ones<arma::rowvec>(m_sz);
-      arma::rowvec mut2 = m_v1*arma::ones<arma::rowvec>(m_sz);
+      arma::rowvec mut2 = m_v2*arma::ones<arma::rowvec>(m_sz);
       arma::mat Mut = arma::join_vert(mut1, mut2); // 2 x m_sz
 
       for(size_t i = 0; i<n; i++)
@@ -343,7 +342,7 @@ class cddm
           j++;
         }
         theta = std::atan2(Xt(1, j-1), Xt(0, j-1));
-        out(i, 0) = divider(theta); // R
+        if ( m_nw != 0 ) { out(i, 0) = divider(theta); } // R
         out(i, 1) = j*m_h + m_t0;   // RT
         out(i, 2) = theta;          // A
       }
@@ -517,8 +516,7 @@ class cddm
       }
       return out;
     }
-
-};
+  };
 
 arma::vec interp2(arma::vec DT_, arma::vec R_, arma::vec DT, arma::vec R,
                   arma::mat Gt, unsigned int sz, unsigned int nw);
